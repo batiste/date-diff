@@ -81,41 +81,41 @@ class TestDateDiff(unittest.TestCase):
             date_diff(week),
             '1 week ago')
 
-        week = today - datetime.timedelta(days=14)
+        weeks_2 = today - datetime.timedelta(days=14)
         self.assertEqual(
-            date_diff(week),
+            date_diff(weeks_2),
             '2 weeks ago')
 
-        week = today - datetime.timedelta(days=21)
+        weeks_3 = today - datetime.timedelta(days=21)
         self.assertEqual(
-            date_diff(week),
+            date_diff(weeks_3),
             '3 weeks ago')
 
-        week = today - datetime.timedelta(days=28)
+        weeks_4 = today - datetime.timedelta(days=28)
         self.assertEqual(
-            date_diff(week),
+            date_diff(weeks_4),
             '4 weeks ago')
 
-        week = today - datetime.timedelta(days=30)
+        weeks_4 = today - datetime.timedelta(days=30)
         self.assertEqual(
-            date_diff(week),
+            date_diff(weeks_4),
             '4 weeks ago')
 
-        week = today - datetime.timedelta(days=31)
+        month_1 = today - datetime.timedelta(days=31)
         self.assertEqual(
-            date_diff(week),
+            date_diff(month_1),
             '1 month ago')
 
         # a little bit weird, but correct according to
         # the values
-        week = today - datetime.timedelta(days=365)
+        month_12 = today - datetime.timedelta(days=365)
         self.assertEqual(
-            date_diff(week),
+            date_diff(month_12),
             '12 months ago')
 
-        week = today - datetime.timedelta(days=366)
+        year_1 = today - datetime.timedelta(days=366)
         self.assertEqual(
-            date_diff(week),
+            date_diff(year_1),
             '1 year ago')
 
         futur = datetime.datetime.utcnow() + datetime.timedelta(seconds=5)
