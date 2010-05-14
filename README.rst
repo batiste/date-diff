@@ -19,3 +19,10 @@ Will give something like::
 To test the filter::
 
     python tests.py
+
+
+I proposed the code for inclusion in Django::
+
+    http://code.djangoproject.com/ticket/13541
+
+The use of javascript instead of python is an open discussion.
