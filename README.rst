@@ -1,5 +1,5 @@
-Human readable date diff filter for Django
-==============================================
+Human readable date diff filter for python (and Django)
+=======================================================
 
 This snippet display a human readable date differential for feed update like twitter or facebook.
 You give it the your date in parameter (an UTC date is expected) and the diff with datetime.datetime.utcnow() is returned.
