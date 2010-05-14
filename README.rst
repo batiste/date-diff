@@ -21,8 +21,6 @@ To test the filter::
     python tests.py
 
 
-I proposed the code for inclusion in Django.
-
-.. Django ticket 13541: http://code.djangoproject.com/ticket/13541
+I proposed the code to be included in Django: `Django ticket 13541 <http://code.djangoproject.com/ticket/13541>`_.
 
 The use of javascript instead of python is an open discussion.
