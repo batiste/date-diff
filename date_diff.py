@@ -3,11 +3,13 @@ from django.utils.translation import ungettext, ugettext as _
 import math
 
 #@register.filter
-def date_diff(d):
+def fuzzy_date_diff(d, now=None):
     if not d:
         return ''
 
-    now = datetime.datetime.utcnow()
+    if not now:
+        now = datetime.datetime.utcnow()
+        
     if d > now:
         # date diff doesn't handle futur dates yet.
         return _("in the future")
@@ -39,7 +41,11 @@ def date_diff(d):
             % {'hours': hours}
 
     if delta_midnight.days == 0:
-        return _("yesterday at %s") % d.strftime("%H:%M")
+        hours = math.floor(delta_midnight.seconds / 3600.)
+        if hours > 12:
+            return _("yesterday morning")
+        else:
+            return _("yesterday afternoon")
 
     count = 0
     for i, (chunk, name) in enumerate(chunks):
