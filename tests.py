@@ -57,7 +57,7 @@ class TestDateDiff(unittest.TestCase):
         hours = int(math.floor((now - today).seconds/3600.))
 
         self.assertEqual(
-            fuzzy_date_diff(today, now),
+            fuzzy_date_diff(today + datetime.timedelta(seconds=1), now),
             ungettext('1 hour ago', '%(hours)d hours ago', hours) % {'hours':hours}
         )
         
@@ -123,10 +123,41 @@ class TestDateDiff(unittest.TestCase):
             fuzzy_date_diff(year_1, now),
             '1 year ago')
 
-        futur = datetime.datetime.utcnow() + datetime.timedelta(seconds=5)
+        # futur testing
+        futur = now + datetime.timedelta(seconds=5)
         self.assertEqual(
             fuzzy_date_diff(futur, now),
-            'in the future')
+            'just now')
+
+        futur = now + datetime.timedelta(seconds=100)
+        self.assertEqual(
+            fuzzy_date_diff(futur, now),
+            'in 1 minute')
+
+        futur = now + datetime.timedelta(minutes=60)
+        self.assertEqual(
+            fuzzy_date_diff(futur, now),
+            'in 1 hour')
+
+        futur = now + datetime.timedelta(hours=24)
+        self.assertEqual(
+            fuzzy_date_diff(futur, now),
+            'in 1 day')
+
+        futur = now + datetime.timedelta(hours=48)
+        self.assertEqual(
+            fuzzy_date_diff(futur, now),
+            'in 2 days')
+
+        futur = now + datetime.timedelta(days=30)
+        self.assertEqual(
+            fuzzy_date_diff(futur, now),
+            'in 4 weeks')
+
+        futur = now + datetime.timedelta(days=32)
+        self.assertEqual(
+            fuzzy_date_diff(futur, now),
+            'in 1 month')
 
 
 if __name__ == '__main__':
