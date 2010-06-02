@@ -12,7 +12,9 @@ class TestDateDiff(unittest.TestCase):
         pass
 
     def test_fuzzy_date_diff(self):
-        now = datetime.datetime.utcnow()
+        
+        now = datetime.datetime.now()
+        
         self.assertEqual(fuzzy_date_diff(now), 'just now')
 
         self.assertEqual(

@@ -2,6 +2,7 @@
 from django.utils.translation import ungettext, ugettext as _
 from django import template
 register = template.Library()
+from django.utils.tzinfo import LocalTimezone
 
 import math
 import datetime
@@ -12,16 +13,26 @@ def fuzzy_date(d, now=None):
 
 
 def fuzzy_date_diff(d, now=None):
-    if not d:
-        return ''
+
+    # Convert datetime.date to datetime.datetime for comparison.
+    if not isinstance(d, datetime.datetime):
+        d = datetime.datetime(d.year, d.month, d.day)
+    if now and not isinstance(now, datetime.datetime):
+        now = datetime.datetime(now.year, now.month, now.day)
 
     if not now:
-        now = datetime.datetime.utcnow()
+        if d.tzinfo:
+            print "tz"
+            now = datetime.datetime.now(LocalTimezone(d))
+        else:
+            print "normal"
+            now = datetime.datetime.now()
 
     in_the_futur = d > now
 
     today = datetime.datetime(now.year, now.month, now.day)
     tomorrow = datetime.datetime(now.year, now.month, now.day+1)
+    
     if in_the_futur:
         delta = d - now
         delta_midnight = d - tomorrow
