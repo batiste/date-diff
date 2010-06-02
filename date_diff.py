@@ -1,8 +1,16 @@
-import datetime
-from django.utils.translation import ungettext, ugettext as _
-import math
 
-#@register.filter
+from django.utils.translation import ungettext, ugettext as _
+from django import template
+register = template.Library()
+
+import math
+import datetime
+
+@register.filter
+def fuzzy_date(d, now=None):
+    return fuzzy_date_diff(d, now)
+
+
 def fuzzy_date_diff(d, now=None):
     if not d:
         return ''
@@ -70,3 +78,4 @@ def fuzzy_date_diff(d, now=None):
     else:
         return _('%(number)d %(type)s ago') % \
             {'number': count, 'type': name(count)}
+
