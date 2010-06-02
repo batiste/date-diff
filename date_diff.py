@@ -39,12 +39,18 @@ def fuzzy_date_diff(d, now=None):
     if days == 0 and hours == 0 and minutes == 0:
         return _("just now")
 
-    if delta_midnight.days == 0 and not in_the_futur:
+    if delta_midnight.days == 0:
         hours = math.floor(delta_midnight.seconds / 3600.)
-        if hours > 12:
-            return _("yesterday morning")
+        if in_the_futur:
+            if hours < 12:
+                return _("tomorrow morning")
+            else:
+                return _("tomorrow afternoon")
         else:
-            return _("yesterday afternoon")
+            if hours > 12:
+                return _("yesterday morning")
+            else:
+                return _("yesterday afternoon")
 
     count = 0
     for i, (chunk, name) in enumerate(day_chunks):

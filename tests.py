@@ -139,10 +139,15 @@ class TestDateDiff(unittest.TestCase):
             fuzzy_date_diff(futur, now),
             'in 1 hour')
 
-        futur = now + datetime.timedelta(hours=24)
+        futur = now + datetime.timedelta(hours=5)
         self.assertEqual(
             fuzzy_date_diff(futur, now),
-            'in 1 day')
+            'tomorrow morning')
+
+        futur = now + datetime.timedelta(hours=23)
+        self.assertEqual(
+            fuzzy_date_diff(futur, now),
+            'tomorrow afternoon')
 
         futur = now + datetime.timedelta(hours=48)
         self.assertEqual(
