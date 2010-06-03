@@ -1,6 +1,6 @@
 import os
-from django.utils.translation import ungettext, ugettext as _
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+from django.utils.translation import ungettext, ugettext as _
 import datetime
 import unittest
 from date_diff import fuzzy_date_diff
@@ -17,8 +17,11 @@ class TestDateDiff(unittest.TestCase):
         
         self.assertEqual(fuzzy_date_diff(now), 'just now')
 
+        now = datetime.datetime.now()
+        self.assertEqual(fuzzy_date_diff(now), 'just now')
+
         self.assertEqual(
-            fuzzy_date_diff(now - datetime.timedelta(seconds=29)),
+            fuzzy_date_diff(now - datetime.timedelta(seconds=20)),
             'just now')
 
         self.assertEqual(
@@ -49,9 +52,11 @@ class TestDateDiff(unittest.TestCase):
             fuzzy_date_diff(now - datetime.timedelta(hours=2)),
             '2 hours ago')
 
-        yesterday = now - datetime.timedelta(hours=24)
+        now = datetime.datetime(year=2010, month=5, day=25, hour=20, minute=12, second=24)
+        yesterday = now - datetime.timedelta(hours=(20+12), minutes=13)
+        
         self.assertEqual(
-            fuzzy_date_diff(yesterday),
+            fuzzy_date_diff(yesterday, now),
             'yesterday morning')
 
         now = datetime.datetime(year=2010, month=5, day=25, hour=20, minute=12, second=24)

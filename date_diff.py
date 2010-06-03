@@ -2,7 +2,6 @@
 from django.utils.translation import ungettext, ugettext as _
 from django import template
 register = template.Library()
-from django.utils.tzinfo import LocalTimezone
 
 import math
 import datetime
@@ -17,15 +16,15 @@ def fuzzy_date_diff(d, now=None):
     # Convert datetime.date to datetime.datetime for comparison.
     if not isinstance(d, datetime.datetime):
         d = datetime.datetime(d.year, d.month, d.day)
+
     if now and not isinstance(now, datetime.datetime):
         now = datetime.datetime(now.year, now.month, now.day)
 
     if not now:
         if d.tzinfo:
-            print "tz"
+            from django.utils.tzinfo import LocalTimezone
             now = datetime.datetime.now(LocalTimezone(d))
         else:
-            print "normal"
             now = datetime.datetime.now()
 
     in_the_futur = d > now
@@ -39,9 +38,9 @@ def fuzzy_date_diff(d, now=None):
     else:
         delta = now - d
         delta_midnight = today - d
-    days = delta.days
-    hours = math.floor(delta.seconds / 3600.)
-    minutes = math.floor(delta.seconds / 60.)
+
+    if delta.days == 0 and delta.seconds < 60:
+        return _("just now")
 
     day_chunks = (
         (365.242199, lambda n: ungettext('year', 'years', n)),
@@ -55,11 +54,8 @@ def fuzzy_date_diff(d, now=None):
         (60, lambda n: ungettext('minute', 'minutes', n)),
     )
 
-    if days == 0 and hours == 0 and minutes == 0:
-        return _("just now")
-
     if delta_midnight.days == 0:
-        hours = math.floor(delta_midnight.seconds / 3600.)
+        hours = delta_midnight.seconds / 3600.
         if in_the_futur:
             if hours < 12:
                 return _("tomorrow morning")
@@ -73,7 +69,7 @@ def fuzzy_date_diff(d, now=None):
 
     count = 0
     for i, (chunk, name) in enumerate(day_chunks):
-        if days >= chunk:
+        if delta.days >= chunk:
             count = round((delta_midnight.days + 1)/chunk, 0)
             break
 
